@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0}
+body{width:900px;height:420px;background:#14161b;font-family:-apple-system,sans-serif;overflow:hidden;position:relative}
+.pad{position:absolute;left:40px;top:60px;width:380px;height:300px;border-radius:26px;background:linear-gradient(180deg,#2a2d35,#23262d);border:1px solid #3a3e48}
+.lbl{position:absolute;left:40px;top:22px;color:#8b93a3;font-size:15px;font-weight:600}
+.f{position:absolute;width:38px;height:38px;border-radius:50%;background:rgba(242,96,28,.9);box-shadow:0 0 0 7px rgba(242,96,28,.22)}
+.r{position:absolute;border-radius:50%;border:3px solid #f2601c}
+.term{position:absolute;left:460px;top:60px;width:400px;height:300px;border-radius:14px;background:#0c0d10;border:1px solid #2c3039;padding:16px 18px;font:15px/1.75 Menlo,monospace;color:#c9d1d9}
+.term .p{color:#7ee787}.term .d{color:#8b93a3}.term .g{color:#ffa657}
+</style></head><body>
+<div class="lbl">Your trackpad</div><div class="lbl" style="left:460px">$ swift run trackpad-demo</div>
+<div class="pad" id="pad"></div><div class="term" id="term"></div>
+<script>
+const T=+new URLSearchParams(location.search).get('t');
+const pad=document.getElementById('pad'),term=document.getElementById('term');
+const S=[ // [start, end, fingers:[x,y,tapping?], output]
+ [0.02,0.18,[[150,170,0],[100,160,1]],'👆 tipTapLeft'],
+ [0.20,0.36,[[120,170,0],[180,160,1]],'👆 tipTapRight'],
+ [0.38,0.52,[[120,150,1],[175,135,1],[230,150,1]],'👆 threeFingerTap'],
+ [0.54,0.66,[[30,30,1]],'👆 cornerTopLeft'],
+ [0.68,0.92,'slide','🎚 right ▲']];
+const seg=(a,b)=>Math.max(0,Math.min(1,(T-a)/(b-a)));
+let out=['<span class="d">Listening on 1 trackpad(s).</span>'];
+for(const [a,b,f,o] of S){
+  if(T>=a&&T<b){
+    if(f==='slide'){const k=seg(a,b);const y=260-k*190;dot(352,y,false)}
+    else{const k=seg(a,b);for(const [x,y,tap] of f){ if(!tap) dot(x,y,false); else if(k>0.35&&k<0.75) ring(x,y,(k-0.35)/0.4) }}
+  }
+  if(f==='slide'){const n=Math.floor(seg(a+0.04,b)*4);for(let i=0;i<n;i++)out.push('<span class="g">'+o+'</span>')}
+  else if(T>=a+(b-a)*0.6) out.push('<span class="g">'+o+'</span>');
+}
+term.innerHTML=out.slice(-11).join('<br>');
+function dot(x,y){const e=document.createElement('div');e.className='f';e.style.left=(x-19)+'px';e.style.top=(y-19)+'px';pad.appendChild(e)}
+function ring(x,y,k){dot(x,y);const r=19+k*24,e=document.createElement('div');e.className='r';e.style.cssText+=`left:${x-r}px;top:${y-r}px;width:${2*r}px;height:${2*r}px;opacity:${1-k}`;pad.appendChild(e)}
+</script></body></html>
