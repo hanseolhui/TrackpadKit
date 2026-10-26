@@ -15,7 +15,7 @@ public struct Touch: Sendable, Hashable {
     public let majorAxis: Float, minorAxis: Float
     /// Ellipse angle in radians.
     public let angle: Float
-    /// Raw state: 1–2 hovering/starting, 3 touch began, 4 touching, 5–7 lifting.
+    /// Raw state: 3 touch began, 4 touching, 5 and above lifting.
     public let state: Int32
 
     /// The finger is actually on the surface (state 3 or 4).

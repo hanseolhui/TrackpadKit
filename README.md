@@ -4,7 +4,7 @@
 
 <p align="center"><img src="docs/demo.gif" width="720" alt="Resting a finger and tapping beside it prints tipTapLeft; three-finger tap, corner tap and an edge slider are recognized too"></p>
 
-macOS gives apps swipes and pinches through `NSEvent`, and nothing else. The trackpad knows far more than that: every finger's position, size and ellipse, 100+ times a second. TrackpadKit gives you that data, plus the two things you need right away once you have it — **palm rejection** and **gesture recognition** — in a small Swift package with no dependencies.
+macOS gives apps swipes and pinches through `NSEvent`, and nothing else. The trackpad knows far more than that: every finger's position, size and ellipse, around 100 times a second. TrackpadKit gives you that data, plus the two things you need right away once you have it — **palm rejection** and **gesture recognition** — in a small Swift package with no dependencies.
 
 It's the engine behind [TokTok](https://apps.seoriarts.com/toktok/en?ref=github-trackpadkit), a trackpad gesture app for macOS.
 
